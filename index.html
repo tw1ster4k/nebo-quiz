@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Quiz Modal</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #FCF8F1;
+    margin: 0;
+    padding: 0;
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modal {
+    background: #FCF8F1;
+    width: 800px;
+    max-width: 90%;
+    border-radius: 20px;
+    padding: 40px 30px 60px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    position: relative;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 20px;
+    color: #515B64;
+    cursor: pointer;
+  }
+
+  .quiz-step {
+    display: none;
+  }
+
+  .quiz-step.active {
+    display: block;
+  }
+
+  h2 {
+    text-transform: uppercase;
+    font-size: 24px;
+    color: #515B64;
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .option {
+    border: 2px solid transparent;
+    border-radius: 12px;
+    width: 150px;
+    padding: 10px;
+    background: white;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+
+  .option img {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .option p {
+    color: #69747F;
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  .option.selected {
+    border-color: #515B64;
+  }
+
+  button {
+    margin-top: 40px;
+    padding: 12px 30px;
+    background-color: #515B64;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  button:hover {
+    opacity: 0.9;
+  }
+
+  input[type=range] {
+    width: 80%;
+    margin-top: 20px;
+  }
+
+  #budget-value {
+    color: #69747F;
+    margin-top: 10px;
+  }
+
+  .rings-preview {
+    margin-top: 30px;
+  }
+
+  .rings-preview h3 {
+    color: #515B64;
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .rings-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .ring {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 150px;
+    padding: 10px;
+  }
+
+  .ring img {
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .ring p {
+    color: #69747F;
+    font-size: 13px;
+    margin-top: 5px;
+  }
+
+  .open-quiz {
+    display: block;
+    margin: 100px auto;
+    background: #515B64;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+  }
+
+</style>
+</head>
+<body>
+<div class="modal-overlay" id="quizModal">
+  <div class="modal-quiz">
+    <span class="close-modal" id="closeQuiz">&times;</span>
+
+    <!-- Шаг 1 -->
+    <div class="quiz-step active" id="step1">
+      <h2 class="quiz-title">WHICH DIAMOND SHAPE SPEAKS TO YOU?</h2>
+      <div class="options" id="diamonds"></div>
+      <div class="rings-preview" id="diamond-preview" style="display:none;">
+        <div style="width:90%; border:1px solid #BEBAB3; height:1px;margin-bottom:40px;"></div>
+        <div class="rings-grid" id="diamond-rings"></div>
+        <a class="link-diamond">SHOW ALL <svg style="margin-left:14px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"><g><path d="M15,18c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l5-5c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-5,5C15.5,17.9,15.3,18,15,18z"/><path d="M20,13c-0.3,0-0.5-0.1-0.7-0.3l-5-5c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l5,5c0.4,0.4,0.4,1,0,1.4C20.5,12.9,20.3,13,20,13z"/><path d="M20,13H4c-0.6,0-1-0.4-1-1s0.4-1,1-1h16c0.6,0,1,0.4,1,1S20.6,13,20,13z"/></g></svg></a>
+      </div>
+      <button class="quiz-modal-btn" id="next1">NEXT STEP</button>
+    </div>
+
+    <!-- Шаг 2 -->
+    <div class="quiz-step" id="step2">
+      <h2 class="quiz-title">WHICH METAL CAPTURES YOUR STYLE?</h2>
+      <div class="options" id="metals"></div>
+      <div class="rings-preview" id="metal-preview" style="display:none;">
+        <div style="width:90%; border:1px solid #BEBAB3; height:1px;margin-bottom:40px;"></div>
+        <div class="rings-grid" id="metal-rings"></div>
+        <a class="link-metal">SHOW ALL <svg style="margin-left:14px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"><g><path d="M15,18c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l5-5c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-5,5C15.5,17.9,15.3,18,15,18z"/><path d="M20,13c-0.3,0-0.5-0.1-0.7-0.3l-5-5c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l5,5c0.4,0.4,0.4,1,0,1.4C20.5,12.9,20.3,13,20,13z"/><path d="M20,13H4c-0.6,0-1-0.4-1-1s0.4-1,1-1h16c0.6,0,1,0.4,1,1S20.6,13,20,13z"/></g></svg></a>
+      </div>
+      <div class="modal-btn-block">
+        <button class="quiz-modal-btn-prev" id="prev1">PREVIOUS STEP</button>
+        <button class="quiz-modal-btn" id="next2">NEXT STEP</button>
+      </div>
+    </div>
+
+    <!-- Шаг 3 -->
+    <div class="quiz-step" id="step3">
+      <h2 class="quiz-title">WHAT'S YOUR IDEAL BUDGET RANGE?</h2>
+      <div class="range-slider">
+        <input type="range" id="minBudget" min="100" max="10000" value="1000" step="1">
+        <input type="range" id="maxBudget" min="100" max="10000" value="5000" step="1">
+      </div>
+      <div class="slider-values">
+        <span id="minValue">$1000</span> — <span id="maxValue">$5000</span>
+      </div>
+      <div class="modal-btn-block">
+        <button class="quiz-modal-btn-prev" id="prev2">PREVIOUS STEP</button>
+        <button class="quiz-modal-btn" id="next3">SEE MY PERFECT RING</button>
+      </div>
+    </div>
+
+    <!-- Шаг 4 -->
+    <div class="quiz-step" id="step4">
+      <h2 class="quiz-title">RINGS CHOSEN JUST FOR YOU</h2>
+      <div class="rings-grid" id="results"></div>
+      <button class="quiz-modal-btn" id="viewMore">VIEW MORE</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // Конфигурация
+  const CONFIG = {
+    SHOPIFY_DOMAIN: '{{ shop.permanent_domain }}',
+    STOREFRONT_TOKEN: 'd66cb5d8015d8a628c2308e865da7f3c',
+    QUIZ_ID: 'quiz_nebo_v1',
+    BASE_URL: 'https://f2czeq-7h.myshopify.com'
+  };
+
+  // Данные для опций
+  const DIAMOND_OPTIONS = [
+    { value: 'Cushion', label: 'CUSHION', img: 'cushion.png?v=1761845721', hoverImg: 'cushion_nebo.png?v=1763301259' },
+    { value: 'Emerald', label: 'EMERALD', img: 'emerald.png?v=1761845732', hoverImg: 'emerald_nebo.png?v=1763301322' },
+    { value: 'Oval', label: 'OVAL', img: 'oval.png?v=1761845737', hoverImg: 'oval_nebo.png?v=1763301330' },
+    { value: 'Round', label: 'ROUND', img: 'round.png?v=1761845750', hoverImg: 'round_nebo.png?v=1763301308' },
+    { value: 'Pear', label: 'PEAR', img: 'pear.png?v=1761845744', hoverImg: 'pear_nebo.png?v=1763301297' },
+    { value: 'Princess', label: 'PRINCESS', img: 'princess.png?v=1762189520', hoverImg: 'princess_nebo.png?v=1763301272' },
+    { value: 'Asscher', label: 'ASSCHER', img: 'asher.png?v=1769383403', hoverImg: 'ascher.png?v=1769384082' },
+    { value: 'Marquise', label: 'MARQUISE', img: 'markiz.png?v=1769383528', hoverImg: 'form-markiz_shadow_darker.png?v=1769384101' },
+    { value: 'Radiant', label: 'RADIANT', img: 'radiant.png?v=1769383607', hoverImg: 'radiantt.png?v=1769384075' },
+    { value: 'No center stone', label: 'NO', img: 'blank.png?v=1761845704', hoverImg: null }
+  ];
+
+  const METAL_OPTIONS = [
+    { value: '10K White Gold', label: 'WHITE GOLD', img: '10k_white_gold_thin.png?v=1769330286' },
+    { value: '14K White Gold', label: 'WHITE GOLD', img: '14k_white_gold_thin.png?v=1761846221' },
+    { value: '18K White Gold', label: 'WHITE GOLD', img: '18k_white_gold_thin.png?v=1761846254' },
+    { value: '10K Yellow Gold', label: 'YELLOW GOLD', img: '10k_white_yellow_thin.png?v=1769330334' },
+    { value: '14K Yellow Gold', label: 'YELLOW GOLD', img: '14k_yellow_gold_thin.png?v=1761846221' },
+    { value: '18K Yellow Gold', label: 'YELLOW GOLD', img: '18k_yellow_gold_thin.png?v=1761846254' },
+    { value: '10K Rose Gold', label: 'ROSE GOLD', img: '10k_rose_gold_thin.png?v=1769330348' },
+    { value: '14K Rose Gold', label: 'ROSE GOLD', img: '14k_rose_gold_thin.png?v=1761846221' },
+    { value: '18K Rose Gold', label: 'ROSE GOLD', img: '18k_rose_gold_thin.png?v=1761846254' },
+    { value: '950 Platinum', label: 'PLATINUM', img: 'platinum_rhin.png?v=1761846319' }
+  ];
+
+  const SALE_DISCOUNTS = {
+    '20% OFF': 0.8,
+    '25% OFF': 0.75,
+    '40% OFF': 0.6,
+    '50% OFF': 0.5
+  };
+
+  const METAL_NORMALIZATION = {
+    '18K Yellow Gold': '10K Yellow Gold',
+    '18K Rose Gold': '10K Rose Gold',
+    '18K White Gold': '10K White Gold',
+    '14K Yellow Gold': '10K Yellow Gold',
+    '14K Rose Gold': '10K Rose Gold',
+    '14K White Gold': '10K White Gold'
+  };
+
+  // Состояние
+  const state = {
+    diamond: '',
+    metal: '',
+    currentStep: 1,
+    quizMinPrice: 0,
+    quizMaxPrice: 0
+  };
+
+  const isMobile = window.innerWidth <= 767;
+  const displayCount = isMobile ? 2 : 5;
+
+  // DOM элементы (кэшируем)
+  const elements = {};
+
+  // Утилиты
+  const getUTM = () => {
+    const p = new URLSearchParams(window.location.search);
+    return {
+      utm_source: p.get('utm_source'),
+      utm_medium: p.get('utm_medium'),
+      utm_campaign: p.get('utm_campaign'),
+      utm_content: p.get('utm_content'),
+      utm_term: p.get('utm_term')
+    };
+  };
+
+  const getClientId = () => {
+    const match = document.cookie.match(/_ga=GA\d\.\d\.(\d+\.\d+)/);
+    return match ? match[1] : null;
+  };
+
+  const pushDataLayer = (data) => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(data);
+  };
+
+  const normalizeMetal = (metal) => METAL_NORMALIZATION[metal] || metal;
+
+  const getSalePrice = (price, saleTitle) => {
+    const discount = SALE_DISCOUNTS[saleTitle];
+    return discount ? price * discount : null;
+  };
+
+  const getImgBaseUrl = () => 'https://cdn.shopify.com/s/files/1/0768/7762/7646/files/';
+
+  const formatPrice = (price) => `$${Number(price).toLocaleString()}`;
+
+  // Генерация HTML для опций
+  const generateOptions = (container, options, type) => {
+    const baseUrl = getImgBaseUrl();
+    container.innerHTML = options.map(opt => `
+      <div data-value="${opt.value}" class="option" ${opt.hoverImg ? `data-hover="${baseUrl}${opt.hoverImg}"` : ''} data-original="${baseUrl}${opt.img}">
+        <img src="${baseUrl}${opt.img}" alt="${opt.label}">
+        ${opt.label}
+      </div>
+    `).join('');
+  };
+
+  // Генерация карточки кольца
+  const createRingCard = (ring) => {
+    const priceHtml = ring.sale !== undefined
+      ? `<span style="color:#d50000;">from ${formatPrice(ring.sale)}</span><s>${formatPrice(ring.price)}</s>`
+      : `from ${formatPrice(ring.price)}`;
+
+    return `
+      <a href="/products/${ring.handle}" target="_blank" class="ring-card" 
+         onclick="dataLayer.push({quiz_id:'${CONFIG.QUIZ_ID}',product_name:'${ring.title.replace(/'/g, "\\'")}'})"
+      >
+        <div class="ring">
+          <img src="${ring.image}" alt="${ring.title}" />
+          <div class="ring-info">
+            <p class="ring-title">${ring.title}</p>
+            <p class="ring-price">${priceHtml}</p>
+          </div>
+        </div>
+      </a>
+    `;
+  };
+
+  // API запросы
+  const fetchFromShopify = async (query) => {
+    const res = await fetch(`https://${CONFIG.SHOPIFY_DOMAIN}/api/2025-01/graphql.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': CONFIG.STOREFRONT_TOKEN
+      },
+      body: JSON.stringify({ query })
+    });
+    return res.json();
+  };
+
+  const buildProductQuery = (diamondShape, limit = 50, includePrice = false) => {
+    const safeQuery = diamondShape === 'No center stone'
+      ? 'metafield.custom.center_stone_for_quiz:No'
+      : `metafield:custom.center_stone:'${diamondShape}'`;
+
+    const priceFields = includePrice ? 'priceV2 { amount currencyCode } compareAtPriceV2 { amount currencyCode }' : '';
+
+    return `{
+      products(first: 30, query: "${safeQuery}") {
+        edges {
+          node {
+            title
+            handle
+            featuredImage { url }
+            priceRange { minVariantPrice { amount currencyCode } }
+            collections(first: 100) { edges { node { title } } }
+            variants(first: 250) {
+              edges {
+                node {
+                  selectedOptions { name value }
+                  image { url }
+                  ${priceFields}
+                }
+              }
+            }
+          }
+        }
+      }
+    }`;
+  };
+
+  const fetchRings = async (diamondShape, includePrice = false) => {
+    const data = await fetchFromShopify(buildProductQuery(diamondShape, includePrice ? 50 : 20, includePrice));
+    const edges = data?.data?.products?.edges || [];
+console.log(edges)
+    return edges.filter(p => p.node.collections.edges[1]?.node?.title === 'Rings');
+  };
+
+  // Обработка данных колец
+  const processRingData = (product, met = null) => {
+    const node = product.node;
+    const collections = node.collections.edges;
+    const saleTitle = collections[collections.length - 1]?.node?.title;
+    const price = parseFloat(node.priceRange?.minVariantPrice?.amount);
+
+    let image = node.featuredImage?.url;
+    let variantPrice = price;
+
+    if (met) {
+      const matchedVariant = node.variants.edges.find(v =>
+        v.node.selectedOptions.some(opt =>
+          opt.name.toLowerCase() === 'material' &&
+          opt.value.toLowerCase().trim() === met.toLowerCase().trim()
+        )
+      );
+      if (!matchedVariant) return null;
+      image = matchedVariant.node.image?.url || image;
+      if (matchedVariant.node.priceV2) {
+        variantPrice = parseFloat(matchedVariant.node.priceV2.amount);
+      }
+    }
+
+    return {
+      title: node.title,
+      handle: node.handle,
+      image,
+      price: variantPrice,
+      sale: getSalePrice(variantPrice, saleTitle)
+    };
+  };
+
+  // Отображение колец
+  const renderRings = (container, rings, startOffset = 0) => {
+    const start = state.diamond === 'Radiant' ? 1 : 0;
+    container.innerHTML = rings.slice(start + startOffset, start + displayCount + startOffset)
+      .map(createRingCard).join('');
+  };
+
+  const showDiamondRings = async () => {
+    const data = await fetchRings(state.diamond);
+    const rings = data.map(p => processRingData(p)).filter(Boolean);
+
+    elements.diamondPreview.style.display = 'flex';
+    elements.diamondPreview.classList.add('active');
+    renderRings(elements.diamondRings, rings);
+    elements.linkDiamond.href = `${CONFIG.BASE_URL}/collections/rings?sort_by=best-selling&filter.p.m.custom.center_stone=${state.diamond}`;
+  };
+
+  const showMetalRings = async () => {
+    const met = normalizeMetal(state.metal);
+    const data = await fetchRings(state.diamond);
+    const rings = data.map(p => processRingData(p, met)).filter(Boolean);
+
+    elements.metalPreview.style.display = 'flex';
+    renderRings(elements.metalRings, rings);
+    elements.linkMetal.href = `${CONFIG.BASE_URL}/collections/rings?sort_by=best-selling&filter.v.option.material=${state.metal}&filter.p.m.custom.center_stone=${state.diamond}`;
+  };
+
+  const showResults = async () => {
+    const minPrice = parseInt(elements.minRange.value);
+    const maxPrice = parseInt(elements.maxRange.value);
+    const met = normalizeMetal(state.metal);
+
+    const userAnswers = { diamond: state.diamond, metal: state.metal, minPrice, maxPrice };
+    pushDataLayer({ event: 'quiz_complete', quiz_id: CONFIG.QUIZ_ID, steps_total: 4, answers_json: JSON.stringify(userAnswers) });
+
+    nextStep(4);
+
+    const data = await fetchRings(state.diamond, true);
+    const start = state.diamond === 'Radiant' ? 1 : 0;
+
+    const filteredRings = data
+      .map(p => processRingData(p, met))
+      .filter(Boolean)
+      .filter(r => {
+        const checkPrice = r.sale ?? r.price;
+        return checkPrice >= minPrice && checkPrice <= maxPrice;
+      })
+      .slice(start, 6 + start);
+
+    if (!filteredRings.length) {
+      elements.results.innerHTML = `
+        <div class="no-results">
+          <h3>NO RINGS FOUND</h3>
+          <p>Unfortunately, we couldn't find rings matching your selection.<br>Try changing the stone, metal, or budget range.</p>
+        </div>`;
+      elements.viewMore.style.display = 'none';
+      return;
+    }
+
+    elements.results.innerHTML = filteredRings.map(createRingCard).join('');
+    elements.viewMore.style.display = '';
+    elements.viewMore.onclick = () => {
+      pushDataLayer({ quiz_id: CONFIG.QUIZ_ID, answers_json: JSON.stringify(userAnswers) });
+      location.href = `${CONFIG.BASE_URL}/collections/rings?sort_by=best-selling&filter.v.option.material=${state.metal}&filter.p.m.custom.center_stone=${state.diamond}&filter.v.price.gte=${minPrice}&filter.v.price.lte=${maxPrice}`;
+    };
+  };
+
+  // Навигация
+  const nextStep = (step) => {
+    document.getElementById(`step${state.currentStep}`).classList.remove('active');
+    document.getElementById(`step${step}`).classList.add('active');
+
+    if (step > 1) {
+      pushDataLayer({ event: 'quiz_step_change', from_step_index: state.currentStep, to_step_index: step });
+    }
+    state.currentStep = step;
+  };
+
+  const prevStep = () => {
+    if (state.currentStep > 1) {
+      pushDataLayer({ event: 'quiz_step_change', from_step_index: state.currentStep, to_step_index: state.currentStep - 1 });
+      nextStep(state.currentStep - 1);
+    }
+  };
+
+  const resetQuiz = () => {
+    state.currentStep = 1;
+    state.diamond = '';
+    state.metal = '';
+    document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step1').classList.add('active');
+    document.querySelectorAll('.option').forEach(o => o.classList.remove('selected', 'ngg52'));
+    elements.diamondPreview.style.display = 'none';
+    elements.metalPreview.style.display = 'none';
+  };
+
+  // Бюджетный слайдер
+  const updateBudgetRange = (e) => {
+    let minVal = parseInt(elements.minRange.value);
+    let maxVal = parseInt(elements.maxRange.value);
+
+    if (minVal > maxVal) {
+      if (e?.target === elements.minRange) {
+        maxVal = minVal;
+        elements.maxRange.value = maxVal;
+      } else {
+        minVal = maxVal;
+        elements.minRange.value = minVal;
+      }
+    }
+
+    elements.minValue.textContent = formatPrice(minVal);
+    elements.maxValue.textContent = formatPrice(maxVal);
+
+    const percent1 = ((minVal - elements.minRange.min) / (elements.minRange.max - elements.minRange.min)) * 100;
+    const percent2 = ((maxVal - elements.maxRange.min) / (elements.maxRange.max - elements.maxRange.min)) * 100;
+    elements.minRange.parentElement.style.background = `linear-gradient(to right, #d3d3d3 ${percent1}%, #515B64 ${percent1}%, #515B64 ${percent2}%, #d3d3d3 ${percent2}%)`;
+
+    pushDataLayer({ event: 'quiz_option_click', quiz_id: CONFIG.QUIZ_ID, step_index: 3, step_id: 'budget', option_value: { minPrice: minVal, maxPrice: maxVal } });
+  };
+
+  const initBudgetSlider = (min, max) => {
+    [elements.minRange, elements.maxRange].forEach(el => {
+      el.min = min;
+      el.max = max;
+    });
+    elements.minRange.value = min;
+    elements.maxRange.value = max;
+    elements.minValue.textContent = formatPrice(min);
+    elements.maxValue.textContent = formatPrice(max);
+    updateBudgetRange();
+  };
+
+  const calculatePriceRange = async () => {
+    const met = normalizeMetal(state.metal);
+    const products = await fetchRings(state.diamond, true);
+    const prices = [];
+
+    products.forEach(p => {
+      const saleTitle = p.node.collections.edges[p.node.collections.edges.length - 1]?.node?.title;
+      const discount = SALE_DISCOUNTS[saleTitle] || 1;
+
+      p.node.variants.edges.forEach(v => {
+        const hasMaterial = v.node.selectedOptions.some(opt =>
+          opt.name.toLowerCase() === 'material' &&
+          opt.value.toLowerCase().trim() === met.toLowerCase().trim()
+        );
+        if (hasMaterial && v.node.priceV2?.amount) {
+          prices.push(Number(v.node.priceV2.amount) * discount);
+        }
+      });
+    });
+
+    return prices.length ? { min: Math.floor(Math.min(...prices)), max: Math.ceil(Math.max(...prices)) } : null;
+  };
+
+  // Обработчики hover для опций
+  const setupOptionHover = (option) => {
+    const img = option.querySelector('img');
+    const original = option.dataset.original;
+    const hover = option.dataset.hover;
+
+    if (hover) {
+      option.addEventListener('mouseenter', () => img.src = hover);
+      option.addEventListener('mouseleave', () => img.src = original);
+    }
+  };
+
+  // Инициализация
+  const init = () => {
+    // Кэшируем элементы
+    elements.modal = document.getElementById('quizModal');
+    elements.diamondPreview = document.getElementById('diamond-preview');
+    elements.metalPreview = document.getElementById('metal-preview');
+    elements.diamondRings = document.getElementById('diamond-rings');
+    elements.metalRings = document.getElementById('metal-rings');
+    elements.results = document.getElementById('results');
+    elements.linkDiamond = document.querySelector('.link-diamond');
+    elements.linkMetal = document.querySelector('.link-metal');
+    elements.minRange = document.getElementById('minBudget');
+    elements.maxRange = document.getElementById('maxBudget');
+    elements.minValue = document.getElementById('minValue');
+    elements.maxValue = document.getElementById('maxValue');
+    elements.viewMore = document.getElementById('viewMore');
+
+    // Генерируем опции
+    generateOptions(document.getElementById('diamonds'), DIAMOND_OPTIONS, 'diamond');
+    generateOptions(document.getElementById('metals'), METAL_OPTIONS, 'metal');
+
+    // Перемещаем модал в body
+    document.body.appendChild(elements.modal);
+
+    // Обработчики для опций камней
+    document.querySelectorAll('#diamonds .option').forEach(opt => {
+      setupOptionHover(opt);
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('#diamonds .option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        state.diamond = opt.dataset.value;
+        state.metal = '';
+        elements.metalPreview.style.display = 'none';
+        document.querySelectorAll('#metals .option').forEach(o => o.classList.remove('selected', 'ngg52'));
+        pushDataLayer({ event: 'quiz_option_click', quiz_id: CONFIG.QUIZ_ID, step_index: 1, step_id: 'stone', option_value: state.diamond });
+        if (state.diamond) showDiamondRings();
+      });
+    });
+
+    // Обработчики для опций металлов
+    document.querySelectorAll('#metals .option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('#metals .option').forEach(o => o.classList.remove('selected', 'ngg52'));
+        opt.classList.add('selected', 'ngg52');
+        state.metal = opt.dataset.value;
+        pushDataLayer({ event: 'quiz_option_click', quiz_id: CONFIG.QUIZ_ID, step_index: 2, step_id: 'metal', option_value: state.metal });
+        if (state.metal) showMetalRings();
+      });
+    });
+
+    // Кнопка открытия квиза
+    const openBtn = document.querySelector('.button-block__button.button-block__button--justify-center.button-block__button--justify-mobile-center.slideshow-slide__text-container-image-button.section-blocks__button');
+    if (openBtn) {
+      openBtn.onclick = () => {
+        elements.modal.style.display = 'flex';
+        pushDataLayer({ event: 'quiz_start', quiz_id: CONFIG.QUIZ_ID, quiz_name: 'Start a quiz', source_page: '/', client_id: getClientId(), ...getUTM() });
+      };
+    }
+
+    // Закрытие
+    document.getElementById('closeQuiz').onclick = () => {
+      elements.modal.style.display = 'none';
+      resetQuiz();
+    };
+
+    // Навигация
+    document.getElementById('next1').onclick = () => {
+      pushDataLayer({ event: 'quiz_step_view', quiz_id: CONFIG.QUIZ_ID, step_index: 2, step_id: 'step_2' });
+      nextStep(2);
+    };
+
+    document.getElementById('next2').onclick = async () => {
+      pushDataLayer({ event: 'quiz_step_view', quiz_id: CONFIG.QUIZ_ID, step_index: 3, step_id: 'step_3' });
+      const range = await calculatePriceRange();
+      if (range) initBudgetSlider(range.min, range.max);
+      nextStep(3);
+    };
+
+    document.getElementById('next3').onclick = () => {
+      pushDataLayer({ event: 'quiz_step_view', quiz_id: CONFIG.QUIZ_ID, step_index: 4, step_id: 'step_4' });
+      showResults();
+    };
+
+    document.getElementById('prev1').onclick = prevStep;
+    document.getElementById('prev2').onclick = prevStep;
+
+    // Слайдер бюджета
+    elements.minRange.addEventListener('input', updateBudgetRange);
+    elements.maxRange.addEventListener('input', updateBudgetRange);
+    updateBudgetRange();
+  };
+
+  // Запуск после загрузки DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<style>
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    max-height:10000px;
+  }
+
+  .modal-quiz {
+    background: #FBF8F0;
+    width: 100%;
+    height:100%;
+    padding: 40px 30px 60px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    position: relative;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 60px;
+    color: #515B64;
+    cursor: pointer;
+    line-height:37px;
+    font-weight:100;
+  }
+
+  .quiz-step {
+    display: none;
+  }
+
+  .quiz-step.active {
+   display: flex;
+   flex-direction:column;
+   align-items: center;
+  }
+
+  .quiz-title {
+    text-transform: uppercase;
+    font-size: 35px;
+    color: #515B64;
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .option {
+    border: 2px solid transparent;
+    width: 110px;
+    padding: 10px;
+    background: white;
+    transition: 0.3s;
+    cursor: pointer;
+    background:none;
+    font-size:12px;
+  }
+
+  .option img {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .option p {
+    color: #69747F;
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  .option.selected {
+text-decoration: underline;
+    text-underline-offset: 6px;
+  }
+
+  .quiz-modal-btn {
+    margin-top: 40px;
+    padding: 12px 30px;
+    background-color: #515B64;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-decoration:none;
+  }
+
+  .quiz-modal-btn:hover {
+    opacity: 0.5;
+  }
+
+  input[type=range] {
+    width: 80%;
+    margin-top: 20px;
+  }
+
+  #budget-value {
+    color: #69747F;
+    margin-top: 10px;
+  }
+
+  .rings-preview {
+    margin-top: 30px;
+    width:100%;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .rings-preview h3 {
+    color: #515B64;
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .rings-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-direction:row;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .ring {
+    background: white;
+    border: 1px solid #ddd;
+    width: 150px;
+    padding: 10px;
+    margin-left:16px;
+    margin-right:16px;
+  }
+
+  .ring img {
+    width: 100%;
+    border-radius: 8px;
+  }
+.ring-title{
+  font-size:9px !important;
+  text-transform:uppercase;
+  font-weight:500;
+}
+  .ring p {
+    color: #69747F;
+    font-size: 12px;
+    margin-top: 5px;
+    display:flex;
+    justify-content:center;
+    gap:5px;
+  }
+
+  .open-quiz {
+    display: block;
+    margin: 100px auto;
+    background: #515B64;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+  }
+.ring-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ring-card img {
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+
+.add-to-cart-button {
+  display: block;
+  padding: 5px 10px;
+  background: #515B64;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  text-transform:uppercase;
+}
+.link-diamond{
+width: 122px;
+    height: 30px;
+    display: flex
+;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    float:right;
+}
+.link-metal{
+width: 122px;
+    height: 30px;
+    display: flex
+;
+
+    padding-bottom: 20px;
+    padding-left: 10px;
+    float:right;
+}
+#budget::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #515B64; 
+  cursor: pointer;
+  box-shadow: 0 0 3px rgba(0,0,0,0.3);
+  transition: background 0.3s ease;
+}
+
+.range-slider {
+  position: relative;
+  width: 80%;
+  margin: 40px auto;
+  height: 10px;
+}
+
+/* Оба ползунка поверх друг друга */
+.range-slider input[type="range"] {
+  position: absolute;
+  left: 0;
+  top: -20px;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none; /* чтобы они не блокировали друг друга */
+  appearance: none;
+  -webkit-appearance: none;
+  border:none;
+}
+
+/* Активный бегунок */
+.range-slider input[type="range"]::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #515B64;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.range-slider input[type="range"]::-moz-range-thumb {
+  pointer-events: all;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #515B64;
+  cursor: pointer;
+}
+.ring-card:hover img{
+ height:100%;
+
+}
+.ring-card:hover .ring-info{
+ display:none;
+}
+.ring:hover img{
+ height:100%;
+}
+.ring:hover .ring-info{
+ display:none;
+}
+.ring:hover{
+height:223px;
+}
+.ring-card:hover .ring{
+height:223px;
+}
+.quiz-modal-btn-prev{
+    margin-top: 40px;
+    padding: 12px 30px;
+    background:none;
+    color: #515B64;
+    border: 2px solid #515B64;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-decoration:none;
+margin-right:20px;
+}
+.quiz-modal-btn-prev:hover{
+    opacity:0.5;
+}
+.modal-btn-block{
+display:flex;
+}
+#step4{
+ max-width:576px;
+ margin: 0 auto;
+}
+#results{
+justify-content:flex-start;
+}
+.option:hover{
+transform:scale(1.1)
+}
+.no-results {
+  width: 100%;
+  padding: 60px 20px;
+  text-align: center;
+  color: #515B64;
+}
+.no-results h3 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+.no-results p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #69747F;
+}
+@media(max-width:767px){
+.modal-quiz{
+overflow-y:scroll;
+}
+.link-diamond{
+ margin-top:30px;
+}
+.ring{
+width:110px;
+height:165px;
+}
+.ring-title{
+font-size:6px !important;
+}
+.ring p{
+font-size:8px;
+gap:3px;
+}
+.ring:hover{
+height:165px;
+}
+.ring-card:hover .ring{
+height:165px;
+}
+#results{
+justify-content:space-between;
+}
+.link-metal{
+ margin-top:30px;
+}
+.option{
+ width:100px;
+font-size:11px;
+}
+.quiz-title{
+font-size:22px;
+}
+.quiz-modal-btn-prev{
+font-size:14px;
+}
+#prev2{
+padding: 10px 20px;
+}
+#next3{
+font-size:12px;
+padding: 6px 10px;
+}
+.options{
+gap:5px;
+}
+}
+</style>
+</body>
+</html>
